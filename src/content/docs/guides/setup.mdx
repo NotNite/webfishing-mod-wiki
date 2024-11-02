@@ -1,0 +1,56 @@
+---
+title: Setup guide
+sidebar:
+  order: 1
+---
+import { LinkCard, CardGrid } from "@astrojs/starlight/components";
+
+## Requirements
+
+- [GodotSteam 3.21](https://github.com/GodotSteam/GodotSteam/releases/tag/v3.21)
+- [Godot RE Tools](https://github.com/bruvzg/gdsdecomp/releases/latest)
+
+## Setting up the sample mod
+
+The [sample mod](https://github.com/NotNite/WebfishingSampleMod) can help you get started quicker.
+
+- Pick an ID for your project (WEBFISHING modders prefer the format of `AuthorName.ModName`).
+- Clone the repository.
+  - If you have a GitHub account, click "Use this template" and create a new repository named after your mod ID. You can then clone the repository locally using a Git client (like [GitHub Desktop](https://github.com/apps/desktop)).
+  - If you do not have a GitHub account, click "Code > Download ZIP".
+- Delete `README.md`.
+- Edit the values in `manifestation.toml` to match your mod.
+
+## Decompiling the game project
+
+In Godot RE Tools, select "RE Tools > Recover project" and pick "Full Recovery". You can then open the resulting project in the Godot editor.
+
+:::caution
+**Never export from the decompiled project!** Exporting from the decompiled project will include vanilla game assets in the exported .pck, no matter what includes/excludes you set. This will break the game on updates and cause mod incompatibilities.
+:::
+
+## Making your mod
+
+What you do next depends on what your mod will be. If you plan to edit existing game scripts, your mod will need to be written (partially or fully) in C#. If you plan to add new assets or make new scripts, your mod will need to be made in the Godot editor.
+
+<CardGrid>
+  <LinkCard
+    title="Modding in the Godot editor"
+    description="For custom assets and scripts"
+    href="/webfishing-mod-wiki/guides/modding-godot"
+  />
+
+  <LinkCard
+    title="Modding with C#"
+    description="For editing existing game scripts"
+    href="/webfishing-mod-wiki/guides/modding-csharp"
+  />
+</CardGrid>
+
+If you don't need one of the two projects (which is likely), delete the project and remove the reference in `manifestation.toml`.
+
+## Publishing your mod
+
+The sample mod uses [manifestation](/webfishing-mod-wiki/tools/manifestation/) for packaging. See the dedicated page for more information.
+
+You can upload the resulting zip files to your GitHub repository's releases and to Thunderstore.
