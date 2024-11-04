@@ -1,0 +1,62 @@
+---
+title: thundersnore
+---
+import { LinkButton } from "@astrojs/starlight/components";
+
+thundersnore is a tool to validate WEBFISHING mods on Thunderstore.
+
+<LinkButton href="https://github.com/NotNite/thundersnore">GitHub</LinkButton>
+
+## Usage
+
+See [the README](https://github.com/NotNite/thundersnore/blob/main/README.md) for more information.
+
+thundersnore is not designed to be ran on a specific mod. Instead, it is ran periodically and processes all new mods on Thunderstore.
+
+## What to do when your mod is flagged
+
+If you were linked this page, your mod was flagged by thundersnore. This can happen for a variety of reasons.
+
+Fixing these issues is optional but **highly recommended.** Your mod may cause incompatibilities with other mods, break on game updates, or have illegally redistributed game assets in your pack file.
+
+### Missing GDWeave dependency
+
+All GDWeave mods on Thunderstore must mark GDWeave as a dependency for installation to work successfully in some mod managers. You can check the latest dependency string [from the GDWeave package](https://thunderstore.io/c/webfishing/p/NotNet/GDWeave/) on the Thunderstore website.
+
+Add the dependency string to the `dependencies` array in your Thunderstore `manifest.json`:
+
+```json
+{
+  // other fields here omitted for brevity
+  "dependencies": ["NotNet-GDWeave-VERSION.GOES.HERE"]
+}
+```
+
+If you are using [manifestation](/webfishing-mod-wiki/tools/manifestation/), add it to your `manifestation.toml` instead:
+
+```toml
+[[dependencies]]
+thunderstore_version = "NotNet-GDWeave-VERSION.GOES.HERE"
+```
+
+### Repackaged game assets
+
+Mods should never repackage vanilla game assets. Mods should never replace scenes/scripts/resources.
+
+This happens most often because of invalid export settings. As detailed in [the setup guide](/webfishing-mod-wiki/guides/setup/#decompiling-the-game-project), you must always export from a fresh project, and never export from the decompiled project.
+
+It is okay to replace assets not related to code (textures, models, and sounds) as long as you do not export anything else with it.
+
+### Script file being replaced
+
+Script files should never be replaced via GDWeave - instead, they should be patched. Use the [GDWeave C# API](/webfishing-mod-wiki/guides/modding-csharp/) to register a script mod that can patch the script as it loads.
+
+If the target script file ever changes with a game update, the replacement script will not have that change, and will cause issues. There is no conflict resolution mechanism beyond load order, so two mods replacing the same script file will lead to inconsistent results.
+
+### No GDWeave manifest.json found
+
+Your mod does not have a GDWeave manifest, or it is invalid. Your manifest must be valid for the mod to load. See [the GDWeave MODS.md](https://github.com/NotNite/GDWeave/blob/main/MODS.md#making-mods) for the structure of the manifest.
+
+### Multiple mods in GDWeave/mods folder
+
+Your mod contains multiple mods in one Thunderstore package. Split off your mod into multiple packages.
